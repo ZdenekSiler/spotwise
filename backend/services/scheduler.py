@@ -7,7 +7,7 @@ its own errors and logs — a source outage must never crash the app.
 from __future__ import annotations
 
 import logging
-from datetime import date, timedelta
+from datetime import date
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -41,14 +41,13 @@ def shutdown() -> None:
 # ─── Jobs ───
 
 async def refresh_spot_prices() -> None:
-    """Fetch today's + tomorrow's day-ahead prices into spot_prices."""
-    for day in (date.today(), date.today() + timedelta(days=1)):
-        try:
-            rows = await ote.fetch_day_ahead(day.isoformat())
-            await db.upsert_spot_prices(rows)
-            log.info("OTE: stored %d prices for %s", len(rows), day)
-        except Exception as exc:  # noqa: BLE001 — jobs must not crash the app
-            log.warning("OTE refresh failed for %s: %s", day, exc)
+    """Fetch today's + tomorrow's day-ahead prices into spot_prices (one upstream call)."""
+    try:
+        rows = await ote.fetch_day_ahead()
+        await db.upsert_spot_prices(rows)
+        log.info("OTE: stored %d prices", len(rows))
+    except Exception as exc:  # noqa: BLE001 — jobs must not crash the app
+        log.warning("OTE refresh failed: %s", exc)
 
 
 async def refresh_fx() -> None:
