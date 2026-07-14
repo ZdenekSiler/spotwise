@@ -68,3 +68,39 @@ async def test_savings_ranks_suppliers(auth_client):
     assert len(body["ranking"]) >= 1
     totals = [r["total_czk"] for r in body["ranking"]]
     assert totals == sorted(totals)  # ascending cost
+
+
+async def test_set_current_supplier_updates_profile(auth_client):
+    resp = await auth_client.put("/api/user/supplier", json={"supplier_id": 1})
+    assert resp.status_code == 200
+    assert resp.json()["current_supplier"] == 1
+    # /auth/me reflects the change.
+    me = await auth_client.get("/auth/me")
+    assert me.json()["current_supplier"] == 1
+
+
+async def test_set_current_supplier_unknown_returns_404(auth_client):
+    resp = await auth_client.put("/api/user/supplier", json={"supplier_id": 99999})
+    assert resp.status_code == 404
+
+
+async def test_set_current_supplier_requires_auth(client):
+    resp = await client.put("/api/user/supplier", json={"supplier_id": 1})
+    assert resp.status_code == 401
+
+
+async def test_savings_vs_current_populated_after_set(auth_client):
+    await db.upsert_spot_prices([
+        ("2025-03-01T00:00:00", "CZ", 100.0),
+        ("2025-03-01T01:00:00", "CZ", 150.0),
+    ])
+    await db.upsert_fx("2025-03-01", 25.0)
+    csv = b"ts,kwh\n2025-03-01T00:00:00,2.0\n2025-03-01T01:00:00,2.0\n"
+    await auth_client.post("/api/consumption", files={"file": ("m.csv", csv, "text/csv")})
+    await auth_client.put("/api/user/supplier", json={"supplier_id": 1})
+
+    body = (await auth_client.get("/api/savings")).json()
+    # The current supplier's own delta is 0; every row now carries a numeric delta.
+    assert all(r["vs_current_czk"] is not None for r in body["ranking"])
+    current = next(r for r in body["ranking"] if r["supplier_id"] == 1)
+    assert current["vs_current_czk"] == 0.0

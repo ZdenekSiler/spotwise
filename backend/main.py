@@ -25,6 +25,7 @@ from routers import (
     prices_api,
     savings_api,
     tariffs_api,
+    user_api,
 )
 from services import db, scheduler
 
@@ -72,6 +73,7 @@ def create_app() -> FastAPI:
     app.include_router(consumption_api.router)
     app.include_router(savings_api.router)
     app.include_router(forecast_api.router)
+    app.include_router(user_api.router)
 
     @app.get("/health")
     async def health():

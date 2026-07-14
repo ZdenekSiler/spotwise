@@ -79,6 +79,18 @@ class SavingsOut(_Base):
     negative_capture_czk: float
 
 
+# ─── user ───
+
+class CurrentSupplierIn(_Base):
+    supplier_id: int
+
+
+class UserProfileOut(_Base):
+    id: int
+    email: str
+    current_supplier: int | None = None
+
+
 # ─── forecast ───
 
 class ForecastDayOut(_Base):
