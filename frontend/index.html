@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spotwise — chytré spotové ceny elektřiny</title>
+  <link rel="stylesheet" href="/src/app.css?v=1" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Spot<span>wise</span></div>
+    <nav class="tabs">
+      <button data-view="dashboard" class="active">Ceny</button>
+      <button data-view="consumption">Moje spotřeba</button>
+      <button data-view="savings">Úspory</button>
+      <button data-view="forecast">Předpověď</button>
+    </nav>
+    <div class="auth-slot" id="authSlot"></div>
+  </header>
+
+  <main>
+    <!-- Dashboard: spot chart + landed-cost tiles -->
+    <section class="view open" id="view-dashboard">
+      <h2>Dnešní spotové ceny</h2>
+      <p class="muted">Skutečná cena v Kč/kWh po započtení distribuce, poplatků a marže dodavatele.</p>
+      <div class="card"><canvas id="priceChart" height="110"></canvas><div id="chartFallback"></div></div>
+      <div class="card"><h3>Cena u dodavatelů</h3><div class="tiles" id="supplierTiles"></div></div>
+    </section>
+
+    <!-- Consumption upload -->
+    <section class="view" id="view-consumption">
+      <h2>Moje spotřeba</h2>
+      <p class="muted">Nahrajte 15minutový export z portálu distributora (CSV).</p>
+      <div class="card" id="consumptionCard"></div>
+    </section>
+
+    <!-- Savings ranking -->
+    <section class="view" id="view-savings">
+      <h2>Personalizované úspory</h2>
+      <p class="muted">Kolik byste zaplatili u každého dodavatele podle vaší skutečné spotřeby.</p>
+      <div class="card" id="savingsCard"></div>
+    </section>
+
+    <!-- Forecast strip -->
+    <section class="view" id="view-forecast">
+      <h2>Směrová předpověď</h2>
+      <p class="muted">Odhad na den+2 a den+3 z německé zbytkové zátěže a počasí.</p>
+      <div class="card"><div class="forecast-strip" id="forecastStrip"></div></div>
+    </section>
+  </main>
+
+  <!-- Chart.js: vendored locally, with a graceful fallback if absent. -->
+  <script src="/src/chart.min.js?v=1"></script>
+  <script src="/src/app.js?v=1"></script>
+  <script src="/src/dashboard.js?v=1"></script>
+  <script src="/src/consumption_import.js?v=1"></script>
+  <script src="/src/savings.js?v=1"></script>
+  <script src="/src/forecast.js?v=1"></script>
+</body>
+</html>

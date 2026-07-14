@@ -1,0 +1,7 @@
+[
+  {"id": 1, "name": "Beznamarze Energie", "product": "Spot 15min", "markup_czk_mwh": 150, "monthly_fee_czk": 89,  "sample": true},
+  {"id": 2, "name": "Nano Energies",      "product": "Nano Spot",  "markup_czk_mwh": 250, "monthly_fee_czk": 79,  "sample": true},
+  {"id": 3, "name": "Amper Market",       "product": "Spot",       "markup_czk_mwh": 200, "monthly_fee_czk": 99,  "sample": true},
+  {"id": 4, "name": "Fonergy",            "product": "Dynamik",    "markup_czk_mwh": 180, "monthly_fee_czk": 120, "sample": true},
+  {"id": 5, "name": "CEZ Prodej",         "product": "Spot Plus",  "markup_czk_mwh": 300, "monthly_fee_czk": 65,  "sample": true}
+]

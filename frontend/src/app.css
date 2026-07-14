@@ -1,0 +1,98 @@
+/* Spotwise design system — single hand-written stylesheet, CSS custom-property tokens. */
+
+:root {
+  --ink: #16202a;
+  --ink-soft: #52616b;
+  --paper: #f7f9fb;
+  --card: #ffffff;
+  --line: #e2e8ee;
+  --blue: #1f6feb;
+  --blue-soft: #e8f0fe;
+  --green: #1a7f52;
+  --amber: #b9770e;
+  --red: #c0392b;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(22, 32, 42, 0.08), 0 8px 24px rgba(22, 32, 42, 0.05);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.5;
+}
+
+header.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.9rem 1.5rem;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.brand { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
+.brand span { color: var(--blue); }
+nav.tabs { display: flex; gap: 0.25rem; flex: 1; }
+nav.tabs button {
+  border: none; background: none; padding: 0.5rem 0.9rem; border-radius: 8px;
+  font: inherit; color: var(--ink-soft); cursor: pointer;
+}
+nav.tabs button.active { background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+.auth-slot { display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
+
+main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+.view { display: none; }
+.view.open { display: block; }
+
+h2 { font-size: 1.3rem; margin: 0 0 0.25rem; letter-spacing: -0.01em; }
+.muted { color: var(--ink-soft); font-size: 0.9rem; }
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 1.25rem; margin-bottom: 1.25rem;
+}
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.9rem; }
+.tile { border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem; }
+.tile .name { font-weight: 600; font-size: 0.95rem; }
+.tile .price { font-size: 1.5rem; font-weight: 700; margin-top: 0.3rem; }
+.tile .unit { color: var(--ink-soft); font-size: 0.8rem; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--line); }
+th { color: var(--ink-soft); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.chip { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.chip.cheap { background: #e4f5ec; color: var(--green); }
+.chip.expensive { background: #fdecea; color: var(--red); }
+.chip.neutral, .chip.unknown { background: #eef1f4; color: var(--ink-soft); }
+.chip.sample { background: #fff4e0; color: var(--amber); }
+
+button.primary {
+  background: var(--blue); color: #fff; border: none; border-radius: 8px;
+  padding: 0.55rem 1rem; font: inherit; font-weight: 600; cursor: pointer;
+}
+button.ghost {
+  background: none; border: 1px solid var(--line); border-radius: 8px;
+  padding: 0.5rem 0.9rem; font: inherit; cursor: pointer;
+}
+input {
+  border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.6rem; font: inherit;
+}
+
+.forecast-strip { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+.forecast-day { flex: 1; min-width: 140px; border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem; }
+.forecast-day .date { font-size: 0.85rem; color: var(--ink-soft); }
+
+.notice { padding: 0.7rem 0.9rem; border-radius: 8px; background: var(--blue-soft); color: var(--blue); font-size: 0.9rem; }
+.notice.warn { background: #fff4e0; color: var(--amber); }
+.hidden { display: none; }
+canvas { max-width: 100%; }

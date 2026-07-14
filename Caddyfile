@@ -1,0 +1,5 @@
+# Standalone TLS case (single-host deploy). In the shared `zdenovo` setup the upstream edge
+# proxy terminates TLS and routes spotwise.${DOMAIN} → spotwise-frontend instead.
+{$DOMAIN} {
+	reverse_proxy frontend:80
+}

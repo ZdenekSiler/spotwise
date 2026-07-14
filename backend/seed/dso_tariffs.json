@@ -1,0 +1,16 @@
+[
+  {"dso": "CEZ",  "component": "distribution",  "czk_per_kwh": 1.85, "czk_per_month": 0,   "sample": true},
+  {"dso": "CEZ",  "component": "system_services","czk_per_kwh": 0.18, "czk_per_month": 0,   "sample": true},
+  {"dso": "CEZ",  "component": "oze_levy",       "czk_per_kwh": 0.60, "czk_per_month": 0,   "sample": true},
+  {"dso": "CEZ",  "component": "capacity_fee",   "czk_per_kwh": 0,    "czk_per_month": 250, "sample": true},
+
+  {"dso": "EGD",  "component": "distribution",  "czk_per_kwh": 1.92, "czk_per_month": 0,   "sample": true},
+  {"dso": "EGD",  "component": "system_services","czk_per_kwh": 0.18, "czk_per_month": 0,   "sample": true},
+  {"dso": "EGD",  "component": "oze_levy",       "czk_per_kwh": 0.60, "czk_per_month": 0,   "sample": true},
+  {"dso": "EGD",  "component": "capacity_fee",   "czk_per_kwh": 0,    "czk_per_month": 240, "sample": true},
+
+  {"dso": "PRE",  "component": "distribution",  "czk_per_kwh": 1.78, "czk_per_month": 0,   "sample": true},
+  {"dso": "PRE",  "component": "system_services","czk_per_kwh": 0.18, "czk_per_month": 0,   "sample": true},
+  {"dso": "PRE",  "component": "oze_levy",       "czk_per_kwh": 0.60, "czk_per_month": 0,   "sample": true},
+  {"dso": "PRE",  "component": "capacity_fee",   "czk_per_kwh": 0,    "czk_per_month": 260, "sample": true}
+]

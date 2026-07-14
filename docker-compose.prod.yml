@@ -1,0 +1,34 @@
+# Production override. Applied via `make deploy` / `make prod`, never plain `docker compose up`.
+# TLS + routing are owned by the shared upstream `zdenovo` edge proxy on the external
+# `zdenovo_public` network; nothing is published directly here.
+services:
+  backend:
+    environment:
+      ALLOWED_ORIGIN: https://spotwise.${DOMAIN}
+      APP_URL: https://spotwise.${DOMAIN}
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-false}
+      LOG_LEVEL: warning
+      SESSION_SECRET: ""  # provided via the Docker file secret below
+    secrets:
+      - spotwise_session_secret
+    networks:
+      zdenovo_public:
+        aliases:
+          - spotwise-backend
+      default: {}
+
+  frontend:
+    ports: !reset []
+    networks:
+      zdenovo_public:
+        aliases:
+          - spotwise-frontend
+      default: {}
+
+networks:
+  zdenovo_public:
+    external: true
+
+secrets:
+  spotwise_session_secret:
+    file: ./secrets/spotwise_session_secret

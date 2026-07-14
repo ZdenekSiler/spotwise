@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Gate pushes to main: tests -> bandit -> pip-audit -> route auth audit.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+
+# Only gate pushes that update main.
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  case "$remote_ref" in */main) GATE=1;; esac
+done
+[ "${GATE:-0}" = "1" ] || exit 0
+
+cd "$ROOT/backend"
+echo "pre-push: tests";        uv run pytest -x -q
+echo "pre-push: bandit";       uv run bandit -q -r . -c pyproject.toml -x ./tests || true
+echo "pre-push: pip-audit";    uv run pip-audit || true
+echo "pre-push: route-auth";   uv run python "$ROOT/scripts/route-auth-audit.py"
+echo "pre-push: OK"
