@@ -92,6 +92,10 @@
   // Expose to other modules.
   window.Spotwise = { apiFetch, escHtml, fmtNum, onView, isLoggedIn: () => !!currentUser, promptLogin };
 
-  refreshAuth();
-  showView("dashboard");
+  // Defer initial render until every view module (loaded after this script) has registered its
+  // onView handler — otherwise showView("dashboard") runs before dashboard.js exists.
+  document.addEventListener("DOMContentLoaded", () => {
+    refreshAuth();
+    showView("dashboard");
+  });
 })();
