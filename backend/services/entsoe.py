@@ -10,10 +10,10 @@ service stays lean on a low-CPU host. See docs/data-sources.md.
 
 from __future__ import annotations
 
-import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 
 import httpx
+from defusedxml.ElementTree import fromstring  # hardened against XML-bomb / entity attacks
 
 import config
 
@@ -67,7 +67,7 @@ def _parse_quantities(xml_text: str) -> list[float]:
     Namespace-agnostic: ENTSO-E stamps a versioned namespace on every tag, so we match by the
     local tag name rather than binding to a specific schema version.
     """
-    root = ET.fromstring(xml_text)
+    root = fromstring(xml_text)
     quantities: list[float] = []
     for elem in root.iter():
         if _local(elem.tag) == "quantity" and elem.text:
