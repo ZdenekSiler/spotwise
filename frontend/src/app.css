@@ -84,9 +84,16 @@ button.ghost {
   background: none; border: 1px solid var(--line); border-radius: 8px;
   padding: 0.5rem 0.9rem; font: inherit; cursor: pointer;
 }
-input {
+input, select {
   border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.6rem; font: inherit;
+  background: var(--card); color: var(--ink);
 }
+
+.picker {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  margin-bottom: 1rem; color: var(--ink-soft); font-size: 0.9rem;
+}
+.picker select { min-width: 220px; }
 
 .forecast-strip { display: flex; gap: 0.9rem; flex-wrap: wrap; }
 .forecast-day { flex: 1; min-width: 140px; border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem; }

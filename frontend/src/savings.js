@@ -12,9 +12,9 @@
       return;
     }
     card.innerHTML = `<p class="muted">Počítám…</p>`;
-    let data;
+    let data, me;
     try {
-      data = await apiFetch("/api/savings");
+      [data, me] = await Promise.all([apiFetch("/api/savings"), apiFetch("/auth/me")]);
     } catch (e) {
       card.innerHTML = `<p class="notice warn">${escHtml(e.message)}</p>`;
       return;
@@ -28,12 +28,48 @@
     const partial = data.partial_window
       ? `<p class="notice warn">Backtest jen z dostupných dat (${fmtNum(data.window_months, 0)} měs.).</p>` : "";
     card.innerHTML = `
+      ${picker(data.ranking, me.current_supplier)}
       ${partial}
       <table>
         <thead><tr><th>Dodavatel</th><th class="num">Roční náklad</th><th class="num">vs. stávající</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       <p class="muted" style="margin-top:0.9rem">Potenciál z „záporných cen": <strong>${fmtNum(data.negative_capture_czk, 0)} Kč</strong></p>`;
+    wirePicker();
+  }
+
+  // Dropdown to set the caller's current supplier — the baseline "vs. stávající" compares against.
+  function picker(ranking, current) {
+    const opts = ranking
+      .slice()
+      .sort((a, b) => a.supplier.localeCompare(b.supplier, "cs"))
+      .map((r) => `<option value="${r.supplier_id}" ${r.supplier_id === current ? "selected" : ""}>${escHtml(r.supplier)}</option>`)
+      .join("");
+    return `<label class="picker">Stávající dodavatel:
+      <select id="currentSupplier">
+        <option value="">— nevybráno —</option>
+        ${opts}
+      </select>
+    </label>`;
+  }
+
+  function wirePicker() {
+    const sel = document.getElementById("currentSupplier");
+    sel.onchange = async () => {
+      if (!sel.value) return;
+      sel.disabled = true;
+      try {
+        await apiFetch("/api/user/supplier", {
+          method: "PUT",
+          body: JSON.stringify({ supplier_id: Number(sel.value) }),
+        });
+      } catch (e) {
+        sel.disabled = false;
+        alert("Nepodařilo se uložit dodavatele: " + e.message);
+        return;
+      }
+      render();  // refresh the "vs. stávající" deltas
+    };
   }
 
   document.addEventListener("auth-changed", () => {
